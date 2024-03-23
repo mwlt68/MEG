@@ -1,7 +1,12 @@
 namespace MEG.FactoryBase;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public abstract class FactoryModelIdentifierAttribute<TIdentity>(TIdentity identity) : Attribute
+public class FactoryModelIdentifierAttribute<TIdentity> : Attribute
 {
-    public TIdentity Identity { get; set; } = identity;
+    public TIdentity Identity { get; set; }
+
+    public FactoryModelIdentifierAttribute(TIdentity identity)
+    {
+        this.Identity = identity;
+    }
 }
