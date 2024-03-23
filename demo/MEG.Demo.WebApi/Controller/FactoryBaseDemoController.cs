@@ -1,4 +1,3 @@
-using MEG.Demo.WebApi.Model;
 using MEG.Demo.WebApi.Service.Factory.PaymentFactory;
 using Microsoft.AspNetCore.Mvc;
 
