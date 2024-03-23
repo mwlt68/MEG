@@ -1,8 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{24EB56E6-6BFB-409C-86CD-A0F82F205404}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEG.FactoryBase", "src\MEG.FactoryBase\MEG.FactoryBase.csproj", "{BD906DAE-C695-4900-AEFD-F0CADB437D7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BD906DAE-C695-4900-AEFD-F0CADB437D7F} = {24EB56E6-6BFB-409C-86CD-A0F82F205404}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BD906DAE-C695-4900-AEFD-F0CADB437D7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD906DAE-C695-4900-AEFD-F0CADB437D7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD906DAE-C695-4900-AEFD-F0CADB437D7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD906DAE-C695-4900-AEFD-F0CADB437D7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
