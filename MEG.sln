@@ -4,6 +4,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{24EB56E6-6BF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEG.FactoryBase", "src\MEG.FactoryBase\MEG.FactoryBase.csproj", "{BD906DAE-C695-4900-AEFD-F0CADB437D7F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{1E0DBC0B-4DA8-4B54-8877-F02F34475973}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEG.Demo.WebApi", "demo\MEG.Demo.WebApi\MEG.Demo.WebApi.csproj", "{88B493E9-D380-487A-8D31-47F68984F56A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -11,11 +15,16 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BD906DAE-C695-4900-AEFD-F0CADB437D7F} = {24EB56E6-6BFB-409C-86CD-A0F82F205404}
+		{88B493E9-D380-487A-8D31-47F68984F56A} = {1E0DBC0B-4DA8-4B54-8877-F02F34475973}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{BD906DAE-C695-4900-AEFD-F0CADB437D7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD906DAE-C695-4900-AEFD-F0CADB437D7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD906DAE-C695-4900-AEFD-F0CADB437D7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD906DAE-C695-4900-AEFD-F0CADB437D7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88B493E9-D380-487A-8D31-47F68984F56A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88B493E9-D380-487A-8D31-47F68984F56A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88B493E9-D380-487A-8D31-47F68984F56A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88B493E9-D380-487A-8D31-47F68984F56A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
