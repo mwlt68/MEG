@@ -1,3 +1,4 @@
+using MEG.Demo.WebApi.Service.Factory.NotificationFactory;
 using MEG.Demo.WebApi.Service.Factory.PaymentFactory;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,16 +8,21 @@ namespace MEG.Demo.WebApi.Controller;
 [Route("[controller]")]
 public class FactoryBaseDemoController : ControllerBase
 {
-    private PaymentFactory _paymentFactory { get; set; }
-    public FactoryBaseDemoController(PaymentFactory paymentFactory)
+    public FactoryBaseDemoController()
     {
-        _paymentFactory = paymentFactory;
     }
     
     [HttpGet("payment")]
-    public IActionResult GetPayment([FromQuery] CreditCardTypes creditCardType , [FromQuery] int amount = 15)
+    public IActionResult GetPayment([FromServices] PaymentFactory paymentFactory,[FromQuery] CreditCardTypes creditCardType , [FromQuery] int amount = 15)
     {
-        var paymentResult = _paymentFactory.CreateBaseModel(creditCardType)!.Pay(amount);
+        var paymentResult = paymentFactory.CreateBaseModel(creditCardType)!.Pay(amount);
+        return Ok(paymentResult);
+    }
+    
+    [HttpGet("notification")]
+    public IActionResult GetNotification([FromServices]NotificationFactory notificationFactory,[FromQuery] string notificationType)
+    {
+        var paymentResult = notificationFactory.CreateBaseModel(notificationType)!.Notify();
         return Ok(paymentResult);
     }
 }
