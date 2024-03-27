@@ -1,6 +1,6 @@
 using MEG.FactoryBase;
 
-namespace MEG.Demo.WebApi.Service.Factory.PaymentFactory;
+namespace MEG.Core.Service.Factory.PaymentFactory;
 
 public class PaymentFactory : FactoryBase<PaymentBase,CreditCardTypes>
 {

@@ -1,5 +1,5 @@
-using MEG.Demo.WebApi.Service.Factory.NotificationFactory;
-using MEG.Demo.WebApi.Service.Factory.PaymentFactory;
+using MEG.Core.Service.Factory.NotificationFactory;
+using MEG.Core.Service.Factory.PaymentFactory;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MEG.Demo.WebApi.Controller;

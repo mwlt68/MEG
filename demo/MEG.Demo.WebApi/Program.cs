@@ -1,4 +1,4 @@
-using MEG.Demo.WebApi.Service.Factory.PaymentFactory;
+using MEG.Core.Service.Factory.PaymentFactory;
 using MEG.FactoryBase;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +11,6 @@ builder.Services.AddFactoryBase(FactoryBaseSettings.GetFactoryBaseSettings<Payme
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

@@ -1,6 +1,6 @@
 using MEG.FactoryBase;
 
-namespace MEG.Demo.WebApi.Service.Factory.NotificationFactory;
+namespace MEG.Core.Service.Factory.NotificationFactory;
 
 public abstract class NotificationBase:FactoryBaseModel<string>
 {
