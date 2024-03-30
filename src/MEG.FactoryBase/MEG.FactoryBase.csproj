@@ -4,10 +4,26 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>MEG.FactoryBase</Title>
+        <Authors>Mevlut Gur</Authors>
+        <Description>It is a library that enables the Factory Design Pattern to be implemented in a generic way and used practically with a clean coding structure.</Description>
+        <PackageIcon>travel.png</PackageIcon>
+        <RepositoryUrl>https://github.com/mwlt68/MEG</RepositoryUrl>
+        <RepositoryType>Public</RepositoryType>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="travel.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
     </ItemGroup>
 
 </Project>
