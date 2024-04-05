@@ -1,0 +1,13 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7312f306_002D1b7f_002D48ab_002Db27f_002D26c4cabe605e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Notification_Sms_CorrectMessage #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::8B041718-A348-48D1-A752-73458262FAB5::net8.0::MEG.UnitTest.FactoryBaseUnitTest&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=aca178c8_002Dfbb8_002D4b28_002Da76c_002Dd020b2569e9d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Notification_Sms_CorrectMessage" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::8B041718-A348-48D1-A752-73458262FAB5::net8.0::MEG.UnitTest.FactoryBaseUnitTest.Notify_AcceptedNotificationType_CorrectMessage&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::8B041718-A348-48D1-A752-73458262FAB5::net8.0::MEG.UnitTest.FactoryBaseUnitTest.Notify_OutOfNotificationType_ApplicationException&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::8B041718-A348-48D1-A752-73458262FAB5::net8.0::MEG.UnitTest.FactoryBaseUnitTest.Pay_OutOfCreditCardType_ArgumentException2&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
