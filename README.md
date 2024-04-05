@@ -8,11 +8,12 @@ It is a library that enables the Factory Design Pattern to be implemented in a g
 
 ### 1.1) Library Code Details
 
-You can examine in detail how the library codes work by reading my [Factory Design Pattern in MEG Library](https://medium.com/p/1b4ae86a7464) article.
+You can examine in detail how the library codes work by reading my [Factory Design Pattern in MEG Library](https://mwltgr.medium.com/factory-design-pattern-in-meg-library-1b4ae86a7464) article.
 
 ### 1.2) Implementation
 
-First, include the **MEG.FactoryBase** library into your project via the Nuget Package Manager.
+First, include the [MEG.FactoryBase](https://www.nuget.org/packages/MEG.FactoryBase/1.0.0) library into your project via the Nuget Package Manager.
+> dotnet add package MEG.FactoryBase --version 1.0.0
 
 The AddFactoryBase method must be called to inject classes in Program.cs.
 We can provide Assembly information where classes derived from FactoryBase will be located with FactoryBaseSettings.
