@@ -10,4 +10,16 @@
     &lt;TestId&gt;xUnit::8B041718-A348-48D1-A752-73458262FAB5::net8.0::MEG.UnitTest.FactoryBaseUnitTest.Notify_OutOfNotificationType_ApplicationException&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::8B041718-A348-48D1-A752-73458262FAB5::net8.0::MEG.UnitTest.FactoryBaseUnitTest.Pay_OutOfCreditCardType_ArgumentException2&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</wpf:ResourceDictionary>
