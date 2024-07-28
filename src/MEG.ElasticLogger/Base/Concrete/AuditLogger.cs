@@ -36,27 +36,24 @@ public class AuditLogger<TAuditLoggerModel>(
         foreach (var entityEntry in entityEntries)
         {
             var entity = entityEntry.Entity;
-            if (entity is IdenticalEntity)
-            {
-                var serializedEntity = JsonConvert.SerializeObject(entity, settings);
-                var state = entityEntry.State.ToString();
-                var entityAudit = GetAuditLoggerModel((entity as IdenticalEntity), serializedEntity, state);
-                var indexDocumentResult = await _elasticClient.IndexAsync(entityAudit,
-                    x => x.Index(_elasticLoggerSettings.AuditLoggerIndex), cancellationToken);
-                indexResponses.Add(indexDocumentResult);
-                await elasticLogger.HandleIndexResponseAsync(indexDocumentResult);
-            }
+            var serializedEntity = JsonConvert.SerializeObject(entity, settings);
+            var state = entityEntry.State.ToString();
+            var entityAudit = GetAuditLoggerModel(entity, serializedEntity, state);
+            var indexDocumentResult = await _elasticClient.IndexAsync(entityAudit,
+                x => x.Index(_elasticLoggerSettings.AuditLoggerIndex), cancellationToken);
+            indexResponses.Add(indexDocumentResult);
+            await elasticLogger.HandleIndexResponseAsync(indexDocumentResult);
         }
 
         return indexResponses;
     }
 
-    protected virtual TAuditLoggerModel GetAuditLoggerModel(IdenticalEntity? entity, string serializedEntity,
+    protected virtual TAuditLoggerModel GetAuditLoggerModel(object entity, string serializedEntity,
         string entityEntryState)
     {
         return new TAuditLoggerModel()
         {
-            EntityId = entity?.Id.ToString(),
+            EntityId = entity is IdenticalEntity identicalEntity ? identicalEntity.Id.ToString() : null,
             OperatorId = elasticLogger.GetOperatorId(),
             OperationDate = DateTime.UtcNow,
             EntityJson = serializedEntity,
