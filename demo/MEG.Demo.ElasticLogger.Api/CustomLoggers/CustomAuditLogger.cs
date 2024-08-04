@@ -16,7 +16,7 @@ public class CustomAuditLogger(
     IElasticLogger elasticLogger)
     : AuditLogger<CustomAuditLoggerModel>(elasticClient, elasticLoggerSettings, elasticLogger)
 {
-    protected override CustomAuditLoggerModel GetAuditLoggerModel(IdenticalEntity? entity, string serializedEntity,
+    protected override CustomAuditLoggerModel GetAuditLoggerModel(object entity, string serializedEntity,
         string entityEntryState)
     {
         var model = base.GetAuditLoggerModel(entity, serializedEntity, entityEntryState);
