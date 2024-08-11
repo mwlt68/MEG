@@ -261,7 +261,7 @@ docker-compose up
 
 - Running Demo Project 🚀
 
-You can access the demo project [here](https://github.com/mwlt68/MEG/tree/logger/demo/MEG.Demo.ElasticLogger.Api)
+You can access the demo project [here](https://github.com/mwlt68/MEG/tree/main/demo/MEG.Demo.ElasticLogger.Api)
 
 ## 4- Customization
 
@@ -400,20 +400,3 @@ builder.Services
     .AddElasticLogger<CustomElasticLogger, CustomAuditLogger, CustomAuditLoggerModel, CustomActionLogger,
         CustomActionLoggerModel, CustomExceptionLogger, CustomExceptionLoggerModel>(builder.Configuration);
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
