@@ -13,6 +13,11 @@ This library allows you to quickly create the basic logging mechanism of your pr
 ## 1- Implementation
 
 - Include MEG.ElasticLogger library in your project
+
+```shell
+  dotnet add package MEG.ElasticLogger --version 1.0.0
+```
+
 - ElasticLoggerSettings configuration
 
 ```json
