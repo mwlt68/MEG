@@ -1,4 +1,3 @@
-using System.Reflection;
 using MEG.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

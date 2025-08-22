@@ -1,4 +1,4 @@
-using System.Reflection;
+using MEG.DependencyInjection.Models;
 using MEG.DependencyInjection.ServiceRegistrar.Interfaces;
 using MEG.DependencyInjection.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,11 +7,13 @@ namespace MEG.DependencyInjection.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddServices(this IServiceCollection services, Assembly? assembly = null)
+    public static IServiceCollection AddServices(this IServiceCollection services, AddServiceOption? options = null)
     {
-        assembly ??= Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly();
-        var serviceTypes = assembly.GetTypes()
+        options ??= new AddServiceOption();
+
+        var serviceTypes = options.Assembly.GetTypes()
             .Where(type => type is { IsClass: true, IsAbstract: false } && typeof(IBaseService).IsAssignableFrom(type))
+            .Where(type => !options.IgnoredTypes.Any(ignoredType => ignoredType.IsAssignableFrom(type)))
             .ToList();
 
         foreach (var serviceType in serviceTypes)
@@ -19,7 +21,8 @@ public static class ServiceCollectionExtension
 
         return services;
     }
-    private static void AddServices(this IServiceCollection services,Type serviceType)
+
+    private static void AddServices(this IServiceCollection services, Type serviceType)
     {
         var markerNamespace = typeof(IBaseService).Namespace;
 
@@ -36,25 +39,22 @@ public static class ServiceCollectionExtension
         var registrar = GetRegistrar(serviceInterface);
 
         if (interfaces.Any())
-        {
-            foreach (var @interface in interfaces)
-                registrar.Register(services, @interface, serviceType, serviceKey);
-        }
+            registrar.Register(services, interfaces.First(), serviceType, serviceKey);
         else
             registrar.Register(services, serviceType, serviceKey);
     }
 
     private static object? GetServiceKey(Type serviceType)
     {
-        object? serviceKey = null;
-        if (typeof(IKeyedBaseService).IsAssignableFrom(serviceType))
-        {
-            var instance = Activator.CreateInstance(serviceType);
-            var property = serviceType.GetProperty(nameof(IKeyedBaseService.ServiceKey));
-            serviceKey = property?.GetValue(instance);
-        }
+        var isKeyedService = typeof(IKeyedBaseService).IsAssignableFrom(serviceType);
+        if (!isKeyedService)
+            return null;
 
-        return serviceKey;
+        var instance = Activator.CreateInstance(serviceType);
+
+        var property = serviceType.GetProperty(nameof(IKeyedBaseService.ServiceKey));
+
+        return property?.GetValue(instance);
     }
 
     private static IServiceRegistrarBase GetRegistrar(Type serviceType)
