@@ -6,4 +6,5 @@ public class AddServiceOption
 {
     public Assembly Assembly { get; set; } = Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly();
     public IEnumerable<Type> IgnoredTypes { get; set; } = [];
+    public bool IsAutoInjectActive { get; set; }
 }

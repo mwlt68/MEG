@@ -7,68 +7,84 @@ namespace MEG.DependencyInjection.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddServices(this IServiceCollection services, AddServiceOption? options = null)
+    public static IServiceCollection AddServices(this IServiceCollection services, AddServiceOption? option = null)
     {
-        options ??= new AddServiceOption();
+        option ??= new AddServiceOption();
 
-        var serviceTypes = options.Assembly.GetTypes()
+        var serviceTypes = option.Assembly.GetTypes()
             .Where(type => type is { IsClass: true, IsAbstract: false } && typeof(IBaseService).IsAssignableFrom(type))
-            .Where(type => !options.IgnoredTypes.Any(ignoredType => ignoredType.IsAssignableFrom(type)))
+            .Where(type => !option.IgnoredTypes.Any(ignoredType => ignoredType.IsAssignableFrom(type)))
             .ToList();
 
         foreach (var serviceType in serviceTypes)
-            services.AddServices(serviceType);
+            services.AddServices(serviceType,option);
 
         return services;
     }
 
-    private static void AddServices(this IServiceCollection services, Type serviceType)
+    private static void AddServices(this IServiceCollection services, Type serviceType,AddServiceOption option)
+    {
+        var serviceInterface = GetServiceInterface(serviceType);
+        var serviceKey = GetServiceKey(serviceType);
+        var registrar = GetRegistrar(serviceType);
+
+        registrar.Register(services, serviceType, serviceInterface, serviceKey,
+            option.IsAutoInjectActive);
+    }
+
+    private static Type? GetServiceInterface(Type serviceType)
     {
         var markerNamespace = typeof(IBaseService).Namespace;
 
-        var serviceKey = GetServiceKey(serviceType);
-
-        var interfaces = serviceType.GetInterfaces()
-            .Where(type => type != serviceType && type.Namespace != markerNamespace)
-            .ToList();
-
-        var serviceInterface = serviceType.GetInterfaces()
-            .First(type => typeof(IBaseService).IsAssignableFrom(type) && type != typeof(IBaseService) &&
-                           type != typeof(IKeyedBaseService) && type.Namespace == markerNamespace);
-
-        var registrar = GetRegistrar(serviceInterface);
-
-        if (interfaces.Any())
-            registrar.Register(services, interfaces.First(), serviceType, serviceKey);
-        else
-            registrar.Register(services, serviceType, serviceKey);
+        return serviceType
+            .GetInterfaces()
+            .FirstOrDefault(type => type != serviceType && type.Namespace != markerNamespace);
     }
 
     private static object? GetServiceKey(Type serviceType)
     {
-        var isKeyedService = typeof(IKeyedBaseService).IsAssignableFrom(serviceType);
+        var isKeyedService = typeof(IKeyedService).IsAssignableFrom(serviceType);
         if (!isKeyedService)
             return null;
 
         var instance = Activator.CreateInstance(serviceType);
 
-        var property = serviceType.GetProperty(nameof(IKeyedBaseService.ServiceKey));
+        var property = serviceType.GetProperty(nameof(IKeyedService.ServiceKey));
 
         return property?.GetValue(instance);
     }
 
     private static IServiceRegistrarBase GetRegistrar(Type serviceType)
     {
-        var genericRegistrarType = typeof(IServiceRegistrar<>).MakeGenericType(serviceType);
+        // Get the base service interface (IScopedService, ITransientService, etc.)
+        var markerNamespace = typeof(IBaseService).Namespace;
+        var baseServiceInterface = serviceType.GetInterfaces()
+            .First(interfaceType => typeof(IBaseService).IsAssignableFrom(interfaceType) &&
+                                    interfaceType != typeof(IBaseService) &&
+                                    interfaceType != typeof(IKeyedService) &&
+                                    interfaceType.Namespace == markerNamespace);
 
+        // For keyed services, use the non-keyed version (IKeyedScopedService -> IScopedService)
+        if (typeof(IKeyedService).IsAssignableFrom(baseServiceInterface))
+        {
+            baseServiceInterface = baseServiceInterface.GetInterfaces()
+                .First(interfaceType => typeof(IBaseService).IsAssignableFrom(interfaceType) &&
+                                        !typeof(IKeyedService).IsAssignableFrom(interfaceType) &&
+                                        interfaceType != typeof(IBaseService) &&
+                                        interfaceType.Namespace == markerNamespace);
+        }
+
+        // Find registrar for the base service interface
+        var genericRegistrarType = typeof(IServiceRegistrar<>).MakeGenericType(baseServiceInterface);
         var registrarType = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(assembly => assembly.GetTypes())
-            .FirstOrDefault(type =>
-                genericRegistrarType.IsAssignableFrom(type) && type is { IsInterface: false, IsAbstract: false });
+            .Where(type => type is { IsInterface: false, IsAbstract: false })
+            .FirstOrDefault(type => type.GetInterfaces().Contains(genericRegistrarType));
 
         if (registrarType == null)
-            throw new ArgumentOutOfRangeException(nameof(serviceType));
+            throw new ArgumentOutOfRangeException(nameof(serviceType),
+                $"No registrar found for service type: {baseServiceInterface.Name}");
 
-        return (IServiceRegistrarBase) Activator.CreateInstance(registrarType)!;
+        return (IServiceRegistrarBase)Activator.CreateInstance(registrarType)!;
     }
 }

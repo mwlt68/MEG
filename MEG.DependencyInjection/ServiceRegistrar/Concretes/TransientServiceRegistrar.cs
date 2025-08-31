@@ -4,11 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MEG.DependencyInjection.ServiceRegistrar.Concretes;
 
-public class TransientServiceRegistrar : IServiceRegistrar<ITransientService>
+public class TransientServiceRegistrar : ServiceRegistrar, IServiceRegistrar<ITransientService>
 {
-    public void Register(IServiceCollection services, Type serviceInterface, Type implementationType,object? serviceKey) =>
-        services.AddTransient(serviceInterface, implementationType);
-
-    public void Register(IServiceCollection services, Type implementationType,object? serviceKey) =>
-        services.AddTransient(implementationType);
+    protected override ServiceLifetime GetServiceLifetime() => ServiceLifetime.Transient;
 }

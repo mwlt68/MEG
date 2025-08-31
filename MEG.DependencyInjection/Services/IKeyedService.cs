@@ -1,6 +1,6 @@
 namespace MEG.DependencyInjection.Services;
 
-public interface IKeyedBaseService : IBaseService
+public interface IKeyedService : IBaseService
 {
     public object? ServiceKey { get;  }
 }

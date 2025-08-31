@@ -1,6 +1,6 @@
 namespace MEG.DependencyInjection.Services;
 
-public interface IKeyedTransientService : IKeyedBaseService
+public interface IKeyedTransientService : IKeyedService,ITransientService
 {
 
 }

@@ -1,6 +1,6 @@
 namespace MEG.DependencyInjection.Services;
 
-public interface IKeyedSingletonService : IKeyedBaseService
+public interface IKeyedSingletonService : IKeyedService,ISingletonService
 {
 
 }
