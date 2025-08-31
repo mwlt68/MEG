@@ -1,7 +1,10 @@
+using MEG.DependencyInjection.Activators;
 using MEG.DependencyInjection.Models;
 using MEG.DependencyInjection.ServiceRegistrar.Interfaces;
 using MEG.DependencyInjection.Services;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace MEG.DependencyInjection.Extensions;
 
@@ -17,12 +20,15 @@ public static class ServiceCollectionExtension
             .ToList();
 
         foreach (var serviceType in serviceTypes)
-            services.AddServices(serviceType,option);
+            services.AddServices(serviceType, option);
+
+        if (option.IsAutoInjectActive)
+            services.Replace(ServiceDescriptor.Transient<IControllerActivator, PropertyInjectingControllerActivator>());
 
         return services;
     }
 
-    private static void AddServices(this IServiceCollection services, Type serviceType,AddServiceOption option)
+    private static void AddServices(this IServiceCollection services, Type serviceType, AddServiceOption option)
     {
         var serviceInterface = GetServiceInterface(serviceType);
         var serviceKey = GetServiceKey(serviceType);
@@ -85,6 +91,6 @@ public static class ServiceCollectionExtension
             throw new ArgumentOutOfRangeException(nameof(serviceType),
                 $"No registrar found for service type: {baseServiceInterface.Name}");
 
-        return (IServiceRegistrarBase)Activator.CreateInstance(registrarType)!;
+        return (IServiceRegistrarBase) Activator.CreateInstance(registrarType)!;
     }
 }

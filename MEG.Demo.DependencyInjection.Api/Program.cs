@@ -1,4 +1,5 @@
 using MEG.DependencyInjection.Extensions;
+using MEG.DependencyInjection.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +8,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddServices();
+builder.Services.AddServices(option: new AddServiceOption() { IsAutoInjectActive = true });
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

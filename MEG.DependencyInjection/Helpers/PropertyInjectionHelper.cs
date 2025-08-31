@@ -1,0 +1,48 @@
+using System.Reflection;
+using MEG.DependencyInjection.Attributes;
+using MEG.DependencyInjection.Services;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace MEG.DependencyInjection.Helpers;
+
+public static class PropertyInjectionHelper
+{
+    public static void Inject(object target, IServiceProvider serviceProvider)
+    {
+        var properties = target.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        foreach (var property in properties)
+        {
+            if (!property.CanWrite)
+                continue;
+
+            object? service;
+
+
+            var isKeyedService = typeof(IKeyedService).IsAssignableFrom(property.PropertyType);
+
+            if ( isKeyedService)
+            {
+                var serviceKeyAttribute = property.GetCustomAttribute<AutoKeyedAttribute>();
+
+                if (serviceKeyAttribute == null)
+                {
+                    throw new InvalidOperationException(
+                        $"Property {property.Name} of type {target.GetType().Name} is marked as IKeyedService but does not have a ServiceKeyAttribute.");
+                }
+
+                var serviceKey = serviceKeyAttribute.Key;
+
+                var getKeyedServiceMethod = typeof(ServiceProviderKeyedServiceExtensions)
+                    .GetMethod(nameof(ServiceProviderKeyedServiceExtensions.GetKeyedService))
+                    ?.MakeGenericMethod(property.PropertyType);
+
+                service = getKeyedServiceMethod?.Invoke(null, [serviceProvider, serviceKey]);
+            }
+            else
+                service = serviceProvider.GetService(property.PropertyType);
+
+            if (service != null)
+                property.SetValue(target, service);
+        }
+    }
+}

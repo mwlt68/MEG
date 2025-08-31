@@ -7,70 +7,94 @@ namespace MEG.Demo.DependencyInjection.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class TestController()
+public class TestController(
+    SingletonTestService singletonTestService,
+    ScopedTestService scopedTestService,
+    TransientTestService transientTestService,
+    ISingletonTestService2 singletonTestService2,
+    IScopedTestService2 scopedTestService2,
+    ITransientTestService2 transientTestService2,
+    [FromKeyedServices(ServiceKeyConstants.KeyedSingleton)]
+    IKeyedSingletonTestService keyedSingletonTestService,
+    [FromKeyedServices(ServiceKeyConstants.KeyedScoped)]
+    IKeyedScopedTestService keyedScopedTestService,
+    [FromKeyedServices(ServiceKeyConstants.KeyedTransient)]
+    IKeyedTransientTestService keyedTransientTestService,
+    [FromKeyedServices(ServiceKeyConstants.KeyedSingleton2)]
+    IKeyedSingletonTestService keyedSingletonTestService2,
+    [FromKeyedServices(ServiceKeyConstants.KeyedScoped2)]
+    IKeyedScopedTestService keyedScopedTestService2,
+    [FromKeyedServices(ServiceKeyConstants.KeyedTransient2)]
+    IKeyedTransientTestService keyedTransientTestService2)
     : ControllerBase
 {
-    [HttpGet("1")]
-    public IActionResult GetServices([FromServices] SingletonTestService singletonTestService,
-        [FromServices] ScopedTestService scopedTestService, [FromServices] TransientTestService transientTestService)
+    private readonly SingletonTestService _singletonTestService = singletonTestService;
+    private readonly ScopedTestService _scopedTestService = scopedTestService;
+    private readonly TransientTestService _transientTestService = transientTestService;
+    private readonly ISingletonTestService2 _singletonTestService2 = singletonTestService2;
+    private readonly IScopedTestService2 _scopedTestService2 = scopedTestService2;
+    private readonly ITransientTestService2 _transientTestService2 = transientTestService2;
+
+
+    private readonly IKeyedSingletonTestService _keyedSingletonTestService = keyedSingletonTestService;
+
+    private readonly IKeyedScopedTestService _keyedScopedTestService = keyedScopedTestService;
+
+    private readonly IKeyedTransientTestService _keyedTransientTestService = keyedTransientTestService;
+
+    private readonly IKeyedSingletonTestService _keyedSingletonTestService2 = keyedSingletonTestService2;
+
+    private readonly IKeyedScopedTestService _keyedScopedTestService2 = keyedScopedTestService2;
+
+    private readonly IKeyedTransientTestService _keyedTransientTestService2 = keyedTransientTestService2;
+
+
+    [HttpGet("GetServices")]
+    public IActionResult GetServices()
     {
         return Ok(
             new
             {
-                SignletonMessage = singletonTestService.GetSingletonMessage(),
-                ScopedMessage = scopedTestService.GetScopedMessage(),
-                TransientMessage = transientTestService.GetTransientMessage(),
+                SignletonMessage = _singletonTestService.GetSingletonMessage(),
+                ScopedMessage = _scopedTestService.GetScopedMessage(),
+                TransientMessage = _transientTestService.GetTransientMessage(),
             });
     }
 
-    [HttpGet("2")]
-    public IActionResult GetServices2([FromServices] ISingletonTestService2 singletonTestService2,
-        [FromServices] IScopedTestService2 scopedTestService2,
-        [FromServices] ITransientTestService2 transientTestService2)
+    [HttpGet("GetServices-2")]
+    public IActionResult GetServices2()
     {
         return Ok(
             new
             {
-                SignletonTestServiceMessage = singletonTestService2.GetSingletonMessage(),
-                ScopedTestServiceMessage = scopedTestService2.GetScopedMessage(),
-                TransientTestServiceMessage = transientTestService2.GetTransientMessage(),
+                SignletonTestServiceMessage = _singletonTestService2.GetSingletonMessage(),
+                ScopedTestServiceMessage = _scopedTestService2.GetScopedMessage(),
+                TransientTestServiceMessage = _transientTestService2.GetTransientMessage(),
             });
     }
 
 
-    [HttpGet("3")]
-    public IActionResult GetServices3(
-        [FromKeyedServices(ServiceKeyConstants.KeyedSingleton)]
-        IKeyedSingletonTestService keyedSingletonTestService,
-        [FromKeyedServices(ServiceKeyConstants.KeyedScoped)]
-        IKeyedScopedTestService keyedScopedTestService,
-        [FromKeyedServices(ServiceKeyConstants.KeyedTransient)]
-        IKeyedTransientTestService keyedTransientTestService)
+    [HttpGet("GetKeyedServices")]
+    public IActionResult GetServices3()
     {
         return Ok(
             new
             {
-                KeyedSignletonTestServiceMessage = keyedSingletonTestService.GetKeyedSingletonMessage(),
-                KeyedScopedTestServiceMessage = keyedScopedTestService.GetKeyedScopedMessage(),
-                KeyedTransientTestServiceMessage = keyedTransientTestService.GetKeyedTransientMessage(),
+                KeyedSignletonTestServiceMessage = _keyedSingletonTestService.GetKeyedSingletonMessage(),
+                KeyedScopedTestServiceMessage = _keyedScopedTestService.GetKeyedScopedMessage(),
+                KeyedTransientTestServiceMessage = _keyedTransientTestService.GetKeyedTransientMessage(),
             });
     }
 
-    [HttpGet("4")]
-    public IActionResult GetServices4(
-        [FromKeyedServices(ServiceKeyConstants.KeyedSingleton2)]
-        IKeyedSingletonTestService keyedSingletonTestService,
-        [FromKeyedServices(ServiceKeyConstants.KeyedScoped2)]
-        IKeyedScopedTestService keyedScopedTestService,
-        [FromKeyedServices(ServiceKeyConstants.KeyedTransient2)]
-        IKeyedTransientTestService keyedTransientTestService)
+    [HttpGet("GetKeyedServices-2")]
+    public IActionResult GetServices4()
     {
         return Ok(
             new
             {
-                KeyedSignletonTestServiceMessage = keyedSingletonTestService.GetKeyedSingletonMessage(),
-                KeyedScopedTestServiceMessage = keyedScopedTestService.GetKeyedScopedMessage(),
-                KeyedTransientTestServiceMessage = keyedTransientTestService.GetKeyedTransientMessage(),
+                KeyedSignletonTestServiceMessage = _keyedSingletonTestService2.GetKeyedSingletonMessage(),
+                KeyedScopedTestServiceMessage = _keyedScopedTestService2.GetKeyedScopedMessage(),
+                KeyedTransientTestServiceMessage = _keyedTransientTestService2.GetKeyedTransientMessage(),
             });
     }
 }

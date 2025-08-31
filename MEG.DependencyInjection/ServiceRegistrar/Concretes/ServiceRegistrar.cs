@@ -1,3 +1,4 @@
+using MEG.DependencyInjection.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MEG.DependencyInjection.ServiceRegistrar.Concretes;
@@ -21,8 +22,8 @@ public abstract class ServiceRegistrar
         {
             return serviceInterface != null
                 ? isAutoInjectActive
-                    ? ServiceDescriptor.Describe(implementationType,
-                        serviceProvider => CreateInstance(serviceProvider, serviceInterface), GetServiceLifetime())
+                    ? ServiceDescriptor.Describe(serviceInterface,
+                        serviceProvider => CreateInstance(serviceProvider, implementationType), GetServiceLifetime())
                     : ServiceDescriptor.Describe(serviceInterface,implementationType, GetServiceLifetime())
                 : isAutoInjectActive
                     ? ServiceDescriptor.Describe(implementationType,
@@ -34,8 +35,8 @@ public abstract class ServiceRegistrar
             if (serviceInterface != null)
             {
                 return isAutoInjectActive
-                    ? new ServiceDescriptor(implementationType, serviceKey,
-                        (serviceProvider, key) => CreateInstance(serviceProvider, serviceInterface),
+                    ? new ServiceDescriptor(serviceInterface, serviceKey,
+                        (serviceProvider, key) => CreateInstance(serviceProvider, implementationType),
                         GetServiceLifetime())
                     : new ServiceDescriptor(serviceInterface,serviceKey,implementationType, GetServiceLifetime());
             }
@@ -50,7 +51,7 @@ public abstract class ServiceRegistrar
     private static object CreateInstance(IServiceProvider serviceProvider, Type implementationType)
     {
         var instance = ActivatorUtilities.CreateInstance(serviceProvider, implementationType);
-        PropertyInjector.InjectProperties(instance, serviceProvider);
+        PropertyInjectionHelper.Inject(instance, serviceProvider);
         return instance;
     }
 }
