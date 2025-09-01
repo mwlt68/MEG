@@ -1,26 +1,41 @@
 using System.Reflection;
 using MEG.DependencyInjection.Attributes;
-using MEG.DependencyInjection.Services;
+using MEG.DependencyInjection.Models;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MEG.DependencyInjection.Helpers;
+namespace MEG.DependencyInjection.Services;
 
-public static class PropertyInjectionHelper
+public class PropertyInjectionService(AddServiceOption addServiceOption)
 {
-    public static void Inject(object target, IServiceProvider serviceProvider)
+    public void Inject(object target, IServiceProvider serviceProvider)
     {
+        if (!addServiceOption.IsAutoInjectActive)
+            return;
+
         var properties = target.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
         foreach (var property in properties)
         {
-            if (!property.CanWrite)
+            var currentValue = property.GetValue(target);
+            if (currentValue != null)
                 continue;
+
+            var ignoreAttribute = property.GetCustomAttribute<IgnoreInjectionAttribute>();
+
+            if (!property.CanWrite || ignoreAttribute != null)
+                continue;
+
+            if (addServiceOption.IsOnlyBaseServiceAutoInject)
+            {
+                var isBaseService = typeof(IBaseService).IsAssignableFrom(property.PropertyType);
+                if (!isBaseService)
+                    continue;
+            }
 
             object? service;
 
-
             var isKeyedService = typeof(IKeyedService).IsAssignableFrom(property.PropertyType);
 
-            if ( isKeyedService)
+            if (isKeyedService)
             {
                 var serviceKeyAttribute = property.GetCustomAttribute<AutoKeyedAttribute>();
 

@@ -1,5 +1,4 @@
 using MEG.DependencyInjection.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace MEG.DependencyInjection.ServiceRegistrar.Interfaces;
 

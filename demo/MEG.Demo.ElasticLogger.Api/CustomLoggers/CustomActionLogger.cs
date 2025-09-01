@@ -1,4 +1,3 @@
-using MEG.Demo.ElasticLogger.Api.Models;
 using MEG.Demo.ElasticLogger.Api.Models.Custom;
 using MEG.ElasticLogger.Base.Abstract;
 using MEG.ElasticLogger.Base.Concrete;

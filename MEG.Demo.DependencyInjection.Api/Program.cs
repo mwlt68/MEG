@@ -8,7 +8,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddServices(option: new AddServiceOption() { IsAutoInjectActive = true });
+builder.Services.AddServices(option: new AddServiceOption() { IsAutoInjectActive = true,IsOnlyBaseServiceAutoInject = true });
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();

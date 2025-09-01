@@ -1,9 +1,6 @@
-
-using MEG.Demo.ElasticLogger.Api.CustomLoggers;
 using MEG.Demo.ElasticLogger.Api.DataAccess.DbContext;
 using MEG.Demo.ElasticLogger.Api.Extensions;
 using MEG.Demo.ElasticLogger.Api.Middleware;
-using MEG.Demo.ElasticLogger.Api.Models.Custom;
 using MEG.ElasticLogger.Extensions;
 using Microsoft.EntityFrameworkCore;
 

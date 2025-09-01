@@ -1,5 +1,6 @@
 using MEG.DependencyInjection.Activators;
 using MEG.DependencyInjection.Models;
+using MEG.DependencyInjection.ServiceRegistrar.Concretes;
 using MEG.DependencyInjection.ServiceRegistrar.Interfaces;
 using MEG.DependencyInjection.Services;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -13,6 +14,12 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddServices(this IServiceCollection services, AddServiceOption? option = null)
     {
         option ??= new AddServiceOption();
+
+        services.AddSingleton(option);
+        services.AddSingleton<PropertyInjectionService>();
+        services.AddSingleton<SingletonServiceRegistrar>();
+        services.AddSingleton<ScopedServiceRegistrar>();
+        services.AddSingleton<TransientServiceRegistrar>();
 
         var serviceTypes = option.Assembly.GetTypes()
             .Where(type => type is { IsClass: true, IsAbstract: false } && typeof(IBaseService).IsAssignableFrom(type))
@@ -32,7 +39,7 @@ public static class ServiceCollectionExtension
     {
         var serviceInterface = GetServiceInterface(serviceType);
         var serviceKey = GetServiceKey(serviceType);
-        var registrar = GetRegistrar(serviceType);
+        var registrar = GetRegistrar(services,serviceType);
 
         registrar.Register(services, serviceType, serviceInterface, serviceKey,
             option.IsAutoInjectActive);
@@ -60,7 +67,7 @@ public static class ServiceCollectionExtension
         return property?.GetValue(instance);
     }
 
-    private static IServiceRegistrarBase GetRegistrar(Type serviceType)
+    private static IServiceRegistrarBase GetRegistrar( IServiceCollection services,Type serviceType)
     {
         // Get the base service interface (IScopedService, ITransientService, etc.)
         var markerNamespace = typeof(IBaseService).Namespace;
@@ -91,6 +98,7 @@ public static class ServiceCollectionExtension
             throw new ArgumentOutOfRangeException(nameof(serviceType),
                 $"No registrar found for service type: {baseServiceInterface.Name}");
 
-        return (IServiceRegistrarBase) Activator.CreateInstance(registrarType)!;
+        using var serviceProvider = services.BuildServiceProvider();
+        return (IServiceRegistrarBase)serviceProvider.GetRequiredService(registrarType);
     }
 }
