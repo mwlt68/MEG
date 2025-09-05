@@ -8,7 +8,7 @@ namespace MEG.Demo.DependencyInjection.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AutoInjectTestController : ControllerBase
+public class PropertyInjectionTestController : ControllerBase
 {
     public SingletonTestService SingletonService { get; set; }
     public ScopedTestService ScopedService { get; set; }
@@ -19,7 +19,7 @@ public class AutoInjectTestController : ControllerBase
     [AutoKeyed(ServiceKeyConstants.KeyedScoped2)] public IKeyedScopedTestService KeyedScopedTestService2 { get; set; }
     [AutoKeyed(ServiceKeyConstants.KeyedSingleton2)] public IKeyedSingletonTestService KeyedSingletonTestService2 { get; set; }
     [AutoKeyed(ServiceKeyConstants.KeyedTransient2)] public IKeyedTransientTestService KeyedTransientTestService2 { get; set; }
-    public AutoInjectTestService AutoInjectTestService { get; set; }
+    public PropertyInjectionTestService PropertyInjectionTestService { get; set; }
 
 
     [HttpGet("GetServices")]
@@ -63,20 +63,20 @@ public class AutoInjectTestController : ControllerBase
     public IActionResult GetServices4()
     {
         return Ok(
-            AutoInjectTestService.GetServiceMessages());
+            PropertyInjectionTestService.GetServiceMessages());
     }
 
     [HttpGet("GetServices-4")]
     public IActionResult GetServices5()
     {
         return Ok(
-            AutoInjectTestService.GetServiceMessages2());
+            PropertyInjectionTestService.GetServiceMessages2());
     }
 
     [HttpGet("GetKeyedServices")]
     public IActionResult GetServices6()
     {
         return Ok(
-            AutoInjectTestService.GetKeyedServiceMessages());
+            PropertyInjectionTestService.GetKeyedServiceMessages());
     }
 }

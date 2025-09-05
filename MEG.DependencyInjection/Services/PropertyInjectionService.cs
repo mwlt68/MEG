@@ -9,7 +9,7 @@ public class PropertyInjectionService(AddServiceOption addServiceOption)
 {
     public void Inject(object target, IServiceProvider serviceProvider)
     {
-        if (!addServiceOption.IsAutoInjectActive)
+        if (!addServiceOption.IsPropertyInjectionActive)
             return;
 
         var properties = target.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -24,7 +24,7 @@ public class PropertyInjectionService(AddServiceOption addServiceOption)
             if (!property.CanWrite || ignoreAttribute != null)
                 continue;
 
-            if (addServiceOption.IsOnlyBaseServiceAutoInject)
+            if (addServiceOption.IsOnlyBaseServiceInject)
             {
                 var isBaseService = typeof(IBaseService).IsAssignableFrom(property.PropertyType);
                 if (!isBaseService)

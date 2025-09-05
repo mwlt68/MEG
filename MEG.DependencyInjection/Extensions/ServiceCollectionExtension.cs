@@ -44,7 +44,7 @@ public static class ServiceCollectionExtension
         services.AddSingleton<ScopedServiceRegistrar>();
         services.AddSingleton<TransientServiceRegistrar>();
 
-        if (option.IsAutoInjectActive)
+        if (option.IsPropertyInjectionActive)
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, PropertyInjectingControllerActivator>());
     }
 

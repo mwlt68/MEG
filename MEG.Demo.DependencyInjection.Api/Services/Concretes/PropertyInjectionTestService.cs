@@ -5,7 +5,7 @@ using MEG.DependencyInjection.Services;
 
 namespace MEG.Demo.DependencyInjection.Api.Services.Concretes;
 
-public class AutoInjectTestService : ITransientService
+public class PropertyInjectionTestService : ITransientService
 {
     public SingletonTestService SingletonService { get; set; }
     public ScopedTestService ScopedService { get; set; }
@@ -16,13 +16,13 @@ public class AutoInjectTestService : ITransientService
     [AutoKeyed(ServiceKeyConstants.KeyedScoped)] public IKeyedScopedTestService KeyedScopedTestService { get; set; }
     [AutoKeyed(ServiceKeyConstants.KeyedSingleton)] public IKeyedSingletonTestService KeyedSingletonTestService { get; set; }
     [AutoKeyed(ServiceKeyConstants.KeyedTransient)] public IKeyedTransientTestService KeyedTransientTestService { get; set; }
-    public ILogger<AutoInjectTestService> Logger { get; set; }
+    public ILogger<PropertyInjectionTestService> Logger { get; set; }
     public IHostEnvironment HostEnvironment { get; set; }
     public IHttpContextAccessor HttpContextAccessor { get; set; }
 
     private readonly string _instanceId;
 
-    public AutoInjectTestService() =>
+    public PropertyInjectionTestService() =>
         _instanceId = Guid.NewGuid().ToString();
 
     public object GetServiceMessages()

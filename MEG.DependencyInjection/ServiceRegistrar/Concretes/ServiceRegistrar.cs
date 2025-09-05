@@ -41,7 +41,7 @@ public abstract class ServiceRegistrar(PropertyInjectionService propertyInjectio
     private object CreateInstance(IServiceProvider serviceProvider, Type implementationType)
     {
         var instance = ActivatorUtilities.CreateInstance(serviceProvider, implementationType);
-        if (options.IsAutoInjectActive)
+        if (options.IsPropertyInjectionActive)
             propertyInjectionService.Inject(instance, serviceProvider);
         return instance;
     }
