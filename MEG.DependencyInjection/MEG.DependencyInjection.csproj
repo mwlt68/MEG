@@ -19,4 +19,11 @@
       <Folder Include="ServiceRegistrar\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="travel.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
+
 </Project>
