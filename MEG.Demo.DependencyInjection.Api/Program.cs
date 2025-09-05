@@ -5,11 +5,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddServices(option: new AddServiceOption() { IsAutoInjectActive = true,IsOnlyBaseServiceAutoInject = true });
-builder.Services.AddHttpContextAccessor();
+builder.Services.AddServices(option: new AddServiceOption() { IsAutoInjectActive = true});
 
 var app = builder.Build();
 

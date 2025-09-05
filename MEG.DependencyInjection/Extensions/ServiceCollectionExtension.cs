@@ -15,24 +15,37 @@ public static class ServiceCollectionExtension
     {
         option ??= new AddServiceOption();
 
-        services.AddSingleton(option);
-        services.AddSingleton<PropertyInjectionService>();
-        services.AddSingleton<SingletonServiceRegistrar>();
-        services.AddSingleton<ScopedServiceRegistrar>();
-        services.AddSingleton<TransientServiceRegistrar>();
+        AddLibraryServices(services, option);
 
-        var serviceTypes = option.Assembly.GetTypes()
-            .Where(type => type is { IsClass: true, IsAbstract: false } && typeof(IBaseService).IsAssignableFrom(type))
-            .Where(type => !option.IgnoredTypes.Any(ignoredType => ignoredType.IsAssignableFrom(type)))
-            .ToList();
+        var serviceTypes = GetServiceTypes(option);
 
         foreach (var serviceType in serviceTypes)
             services.AddServices(serviceType, option);
 
+        return services;
+    }
+
+    private static List<Type> GetServiceTypes(AddServiceOption option)
+    {
+        var serviceTypes = option.Assembly.GetTypes()
+            .Where(type => type is { IsClass: true, IsAbstract: false } && typeof(IBaseService).IsAssignableFrom(type))
+            .Where(type => !option.IgnoredTypes.Any(ignoredType => ignoredType.IsAssignableFrom(type)))
+            .ToList();
+        return serviceTypes;
+    }
+
+    private static void AddLibraryServices(IServiceCollection services, AddServiceOption option)
+    {
+        services.AddSingleton(option);
+
+        services.AddSingleton<PropertyInjectionService>();
+
+        services.AddSingleton<SingletonServiceRegistrar>();
+        services.AddSingleton<ScopedServiceRegistrar>();
+        services.AddSingleton<TransientServiceRegistrar>();
+
         if (option.IsAutoInjectActive)
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, PropertyInjectingControllerActivator>());
-
-        return services;
     }
 
     private static void AddServices(this IServiceCollection services, Type serviceType, AddServiceOption option)
@@ -41,8 +54,7 @@ public static class ServiceCollectionExtension
         var serviceKey = GetServiceKey(serviceType);
         var registrar = GetRegistrar(services,serviceType);
 
-        registrar.Register(services, serviceType, serviceInterface, serviceKey,
-            option.IsAutoInjectActive);
+        registrar.Register(services, serviceType, serviceInterface, serviceKey);
     }
 
     private static Type? GetServiceInterface(Type serviceType)
