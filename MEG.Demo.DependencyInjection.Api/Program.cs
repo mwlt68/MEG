@@ -10,7 +10,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddServices(option: new AddServiceOption() { IsPropertyInjectionActive = true});
+builder.Services.AddServices(option: new AddServiceOption { IsPropertyInjectionActive = true});
 
 var app = builder.Build();
 

@@ -12,6 +12,9 @@ public class PropertyInjectionService(AddServiceOption addServiceOption)
         if (!addServiceOption.IsPropertyInjectionActive)
             return;
 
+        ArgumentNullException.ThrowIfNull(target);
+        ArgumentNullException.ThrowIfNull(serviceProvider);
+
         var properties = target.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
         foreach (var property in properties)
         {
