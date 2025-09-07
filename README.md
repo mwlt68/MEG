@@ -14,5 +14,7 @@ This library allows you to quickly create the basic logging mechanism of your pr
 You can read the details about the library [here](https://github.com/mwlt68/MEG/tree/main/src/MEG.ElasticLogger)
 
 
+## 2)  MEG.DependencyInjection
 
-
+This library provides automatic service registration and property injection capabilities for .NET applications. With MEG.DependencyInjection, you can register all your services and perform property injection with a single line of code.
+You can read the details about the library [here](https://github.com/mwlt68/MEG/tree/main/src/MEG.DependencyInjection)
