@@ -247,4 +247,4 @@ public class UserService : IUserService
 
 ## 4- Demonstration Project
 
-You can access the demo project (here)[https://github.com/mwlt68/MEG/tree/main/demo/MEG.Demo.DependencyInjection.Api]
+You can access the demo project [here](https://github.com/mwlt68/MEG/tree/main/demo/MEG.Demo.DependencyInjection.Api)
